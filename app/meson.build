@@ -1,5 +1,4 @@
 src = [
-    'src/main.c',
     'src/adb/adb.c',
     'src/adb/adb_device.c',
     'src/adb/adb_parser.c',
@@ -190,7 +189,7 @@ configure_file(configuration: conf, output: 'config.h')
 
 src_dir = include_directories('src')
 
-executable('scrcpy', src,
+executable('scrcpy', ['src/main.c'] + src,
            dependencies: dependencies,
            include_directories: src_dir,
            install: true,
@@ -295,6 +294,13 @@ if get_option('buildtype') == 'debug'
                          c_args: ['-DSC_TEST'])
         test(t[0], exe)
     endforeach
+
+    screen_test = executable('test_screen', ['tests/test_screen.c'] + src,
+                             include_directories: src_dir,
+                             dependencies: dependencies,
+                             c_args: ['-DSC_TEST'])
+    test('test_screen', screen_test,
+         env: ['SCRCPY_ICON_DIR=' + meson.current_source_dir() / 'data'])
 endif
 
 if meson.version().version_compare('>= 0.58.0')

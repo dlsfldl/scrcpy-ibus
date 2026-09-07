@@ -615,10 +615,14 @@ sc_screen_init(struct sc_screen *screen,
         goto error_destroy_renderer;
     }
 
-    ok = SDL_StartTextInput(screen->window);
-    if (!ok) {
-        LOGE("Could not enable text input: %s", SDL_GetError());
-        goto error_destroy_texture;
+    // A host IME may consume key events, so only enable it for processors
+    // which use text input. HID keyboards handle composition on the device.
+    if (params->kp && params->kp->ops->process_text) {
+        ok = SDL_StartTextInput(screen->window);
+        if (!ok) {
+            LOGE("Could not enable text input: %s", SDL_GetError());
+            goto error_destroy_texture;
+        }
     }
 
     SDL_Surface *icon = sc_icon_load(SC_ICON_FILENAME_SCRCPY);

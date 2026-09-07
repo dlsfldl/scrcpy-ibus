@@ -1,3 +1,8 @@
+> [!NOTE]
+> Personal Ubuntu/IBus variant: use `-K` to forward keys with device-side
+> composition. See [Ubuntu build and usage instructions (한국어)](README-UBUNTU-KO.md).
+> This is a modified copy of the upstream project linked below.
+
 > [!WARNING]
 > **This GitHub repo (<https://github.com/Genymobile/scrcpy>) is the only official
 source for the project. Do not download releases from random websites, even if
